@@ -140,9 +140,11 @@ Page({
         // 再次发请求，获取最新的视频列表数据
         this.getVideoList(this.data.navId);
     },
-    // 自定义上拉触底的回调
-    handleToLower(){
-        
+    // 跳转至搜索界面
+    toSearch(){
+        wx.navigateTo({
+          url: '/pages/search/search',
+        })
     },
     /**
      * 生命周期函数--监听页面初次渲染完成

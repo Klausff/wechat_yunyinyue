@@ -7,6 +7,18 @@
         <image class="disc" src="../../static/images/song/disc.png"></image>
         <image class="musicImage" src="{{song.al.picUrl}}"></image>
     </view>
+    <!-- 进度条 -->
+    <view class="progressControl">
+        <text>{{currentTime}}</text>
+        <!-- 总进度条 -->
+        <view class="barControl">
+            <view class="audioCurrentTimeBar" style="width: {{currentWidth+'rpx'}}">
+                <!-- 圆球 -->
+                <view class="audioCircle"></view>
+            </view>
+        </view>
+        <text>{{durationTime}}</text>
+    </view>
     <!-- 底部播放区域 -->
     <view class="musicControl">
         <text class="iconfont icon-24gl-shuffle"></text>

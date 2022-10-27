@@ -8,7 +8,8 @@ Page({
     data: {
         day:'', // 日
         month:'', // 月
-        recommendSongsList:[] //每日推荐歌曲数据
+        recommendSongsList:[], //每日推荐歌曲数据
+        index:0,//点击音乐的下标
     },
 
     /**
@@ -35,6 +36,26 @@ Page({
         })
         //获取每日推荐歌曲数据
         this.getRecommendSongsList();
+        //订阅来自songdetail发布的消息
+        pubsub.subscribe('switchType',(msg,type)=>{
+            let {recommendSongsList,index} = this.data
+            if(type==='pre'){
+                // 切换上一首
+                (index === 0) && (index = recommendSongsList.length);
+                index-=1;
+            }else{
+                // 切换下一首
+                (index === recommendSongsList.length-1)&& (index = -1);
+                index+=1;
+            }
+            // 更新下标
+            this.setData({
+                index
+            })
+            let musicId = recommendSongsList[index].privilege.id;
+            // 将音乐id传递给songDetail页面
+            pubsub.publish('musicId',musicId)
+        });
     },
     //获取每日推荐歌曲数据
     async getRecommendSongsList(){
@@ -50,7 +71,10 @@ Page({
     },
     // 跳转至songDetail页面
     toSOngDetail(event){
-        let song = event.currentTarget.dataset.song;
+        let {song,index} = event.currentTarget.dataset;
+        this.setData({
+            index
+        });
         //路由跳转传参
         wx.navigateTo({
           url: '/pages/songDetail/songDetail?musicId='+song.privilege.id
